@@ -73,7 +73,7 @@ class HybridModel:
 
         heatmap = np.maximum(heatmap, 0) / (np.max(heatmap) + 1e-8)
 
-        return heatmap.numpy()
+        return heatmap
 
     def overlay_heatmap(self, heatmap, img):
 

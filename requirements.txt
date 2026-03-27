@@ -2,6 +2,7 @@ flask
 numpy
 opencv-python
 tensorflow
+protobuf<5
 scikit-learn
 joblib
 xgboost
