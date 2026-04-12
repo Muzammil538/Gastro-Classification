@@ -1,47 +1,73 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>GI AI System</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
+    <style>
+      body {
+        background-color: #f8fafc;
+        background-image: url("../static/images/download.jpeg");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+      }
+      .page-card {
+        background-color: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(10px);
+      }
+    </style>
+  </head>
 
-<body class="bg-gray-50 min-h-screen">
-
-<nav class="bg-white shadow px-6 py-4 flex justify-between">
-    <h1 class="font-bold text-blue-600">GI-AI</h1>
-    <div>
+  <body class="min-h-screen">
+    <nav
+      class="bg-white/90 shadow px-6 py-4 flex justify-between backdrop-blur-sm"
+    >
+      <h1 class="font-bold text-blue-600">GI-AI</h1>
+      <div>
         <a href="/" class="mr-4">Home</a>
         <a href="/history">History</a>
+      </div>
+    </nav>
+
+    <div class="flex justify-center mt-10">
+      <div class="page-card p-8 rounded-2xl shadow-lg w-[500px]">
+        <form method="POST" enctype="multipart/form-data">
+          <input
+            type="file"
+            name="image"
+            required
+            class="w-full border p-2 rounded"
+          />
+          <button class="mt-3 w-full bg-blue-600 text-white py-2 rounded">
+            Analyze
+          </button>
+        </form>
+
+        {% if invalid_image %}
+        <div class="mt-4 p-4 bg-red-100 rounded border border-red-200 text-red-800 text-center">
+          <p class="font-bold">Invalid image</p>
+          <p>{{ invalid_message }}</p>
+        </div>
+        {% endif %}
+
+        {% if prediction and not invalid_image %}
+        <div class="mt-6 grid grid-cols-2 gap-4">
+            <div>
+                <img src="{{ image_path }}" class="rounded" />
+                <p>Original Image (Input Image)</p>
+            </div>
+            <div>
+                <img src="{{ cam_path }}" class="rounded" />
+                <p>Grad-CAM Visualization</p>
+            </div>
+        </div>
+
+        <div class="mt-4 p-4 bg-green-100 rounded text-center">
+          <p class="font-bold">{{ prediction }}</p>
+          <p>{{ confidence | round(2) }}%</p>
+        </div>
+        {% endif %}
+      </div>
     </div>
-</nav>
-
-<div class="flex justify-center mt-10">
-
-<div class="bg-white p-8 rounded-2xl shadow-lg w-[500px]">
-
-<form method="POST" enctype="multipart/form-data">
-    <input type="file" name="image" required class="w-full border p-2 rounded">
-    <button class="mt-3 w-full bg-blue-600 text-white py-2 rounded">
-        Analyze
-    </button>
-</form>
-
-{% if prediction %}
-<div class="mt-6 grid grid-cols-2 gap-4">
-
-<img src="{{ image_path }}" class="rounded">
-<img src="{{ cam_path }}" class="rounded">
-
-</div>
-
-<div class="mt-4 p-4 bg-green-100 rounded text-center">
-    <p class="font-bold">{{ prediction }}</p>
-    <p>{{ confidence | round(2) }}%</p>
-</div>
-{% endif %}
-
-</div>
-</div>
-
-</body>
+  </body>
 </html>

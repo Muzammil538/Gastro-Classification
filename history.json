@@ -1,5 +1,35 @@
 [
   {
+    "image": "static/uploads/729e596c-2acb-4c3f-b1f5-8451fb909fbc.jpg",
+    "prediction": "esophagitis",
+    "confidence": 99.42,
+    "time": "2026-03-28 15:38"
+  },
+  {
+    "image": "static/uploads/187d7859-059b-45c8-8e7b-e83333740a9d.jpg",
+    "prediction": "ulcerative-colitis",
+    "confidence": 77.51,
+    "time": "2026-03-28 15:35"
+  },
+  {
+    "image": "static/uploads/2a6a2f54-2b2c-4c4f-bce7-f9b1dbce6a19.jpg",
+    "prediction": "esophagitis",
+    "confidence": 99.42,
+    "time": "2026-03-28 15:34"
+  },
+  {
+    "image": "static/uploads/787506b3-5b6b-4d27-8d33-9e080dd9db94.jpg",
+    "prediction": "esophagitis",
+    "confidence": 99.42,
+    "time": "2026-03-27 21:35"
+  },
+  {
+    "image": "static/uploads/480f71a6-dbe5-4ded-aef8-7bf4306c87f7.jpg",
+    "prediction": "esophagitis",
+    "confidence": 99.42,
+    "time": "2026-03-27 21:35"
+  },
+  {
     "image": "static/uploads/510947c6-6cb1-4ce2-bbdd-2aadd91fc417.jpg",
     "prediction": "esophagitis",
     "confidence": 99.42,

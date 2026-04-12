@@ -36,54 +36,71 @@ def index():
     confidence = None
     image_path = None
     cam_path = None
+    invalid_image = False
+    invalid_message = None
 
     if request.method == "POST":
-        file = request.files["image"]
+        file = request.files.get("image")
 
-        if file:
+        if file and file.filename:
             filename = str(uuid.uuid4()) + ".jpg"
             path = os.path.join(UPLOAD_FOLDER, filename)
             file.save(path)
 
             img = cv2.imread(path)
-
-            prediction, confidence, cam_img = model.predict(img)
-
-            # 🔥 Confidence Mapping
-            if confidence < 0.30:
-                display_conf = 72 + confidence * 20
-            elif confidence < 0.50:
-                display_conf = 80 + confidence * 15
+            if img is None:
+                invalid_image = True
+                invalid_message = "Unable to read the uploaded file. Please upload a valid image."
             else:
-                display_conf = confidence * 100
+                prediction, confidence, cam_img = model.predict(img)
 
-            cam_filename = "cam_" + filename
-            cam_full = os.path.join(UPLOAD_FOLDER, cam_filename)
-            cv2.imwrite(cam_full, cam_img)
+                if confidence < 0.35:
+                    invalid_image = True
+                    invalid_message = "Invalid image for this project. Please upload a gastrointestinal image."
+                else:
+                    # 🔥 Confidence Mapping
+                    if confidence < 0.30:
+                        display_conf = 72 + confidence * 20
+                    elif confidence < 0.50:
+                        display_conf = 80 + confidence * 15
+                    else:
+                        display_conf = confidence * 100
 
-            image_path = path
-            cam_path = cam_full
+                    cam_filename = "cam_" + filename
+                    cam_full = os.path.join(UPLOAD_FOLDER, cam_filename)
+                    cv2.imwrite(cam_full, cam_img)
 
-            history.insert(0, {
-                "image": path,
-                "prediction": prediction,
-                "confidence": round(display_conf, 2),
-                "time": datetime.now().strftime("%Y-%m-%d %H:%M")
-            })
+                    image_path = path
+                    cam_path = cam_full
 
-            if len(history) > 20:
-                history.pop()
+                    history.insert(0, {
+                        "image": path,
+                        "prediction": prediction,
+                        "confidence": round(display_conf, 2),
+                        "time": datetime.now().strftime("%Y-%m-%d %H:%M")
+                    })
 
-            save_history()
+                    if len(history) > 20:
+                        history.pop()
 
-            return render_template("index.html",
-                prediction=prediction,
-                confidence=display_conf,
-                image_path=image_path,
-                cam_path=cam_path
-            )
+                    save_history()
 
-    return render_template("index.html")
+                    return render_template("index.html",
+                        prediction=prediction,
+                        confidence=display_conf,
+                        image_path=image_path,
+                        cam_path=cam_path,
+                        invalid_image=invalid_image,
+                        invalid_message=invalid_message
+                    )
+        else:
+            invalid_image = True
+            invalid_message = "Please select an image file to upload."
+
+    return render_template("index.html",
+        invalid_image=invalid_image,
+        invalid_message=invalid_message
+    )
 
 @app.route("/history")
 def history_page():
