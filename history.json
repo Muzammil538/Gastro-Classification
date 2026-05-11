@@ -1,5 +1,11 @@
 [
   {
+    "image": "static/uploads/15ae9677-8e74-4a21-8694-e5fdee1c94a1.jpg",
+    "prediction": "dyed-lifted-polyps",
+    "confidence": 98.21,
+    "time": "2026-04-14 11:06"
+  },
+  {
     "image": "static/uploads/729e596c-2acb-4c3f-b1f5-8451fb909fbc.jpg",
     "prediction": "esophagitis",
     "confidence": 99.42,
